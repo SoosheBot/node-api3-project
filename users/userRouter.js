@@ -23,8 +23,8 @@ router.post("/:id/posts", (req, res) => {
 router.get("/", (req, res) => {
   // do your magic!
   Users.get(req.query)
-  .then(user => {
-    res.status(201).json(user);
+  .then(users => {
+    res.status(201).json(users);
   })
   .catch(err => {
     res.status(500).json({errorMessage: "Could not get users."})
