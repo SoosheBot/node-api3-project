@@ -11,12 +11,18 @@ router.get('/', (req, res) => {
     res.status(201).json(posts);
   })
   .catch(err => {
-    res.status(500).json({errorMessage: "Could not get users."})
+    res.status(500).json({errorMessage: "Could not get posts."})
   })
 });
 
 router.get('/:id', (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  Posts.getById(id).then(posts => {
+    res.status(200).json(posts)
+  }).catch(err => {
+    res.status(500).json({errorMessage: "Could not find post with that ID"});
+  });
 });
 
 router.delete('/:id', (req, res) => {

@@ -33,6 +33,12 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  Users.getById(id).then(users => {
+    res.status(200).json(users)
+  }).catch(err => {
+    res.status(500).json({errorMessage: "Could not find user with that ID"});
+  });
 });
 
 router.get("/:id/posts", (req, res) => {
