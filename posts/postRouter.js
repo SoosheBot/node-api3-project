@@ -4,6 +4,17 @@ const Posts = require("./postDb");
 
 const router = express.Router();
 
+router.post("/", (req,res) => {
+  const posts = {...req.body};
+  Posts.insert(posts)
+    .then(post => {
+      res.status(201).json(post);
+    })
+    .catch(err => {
+      res.status(500).json({ errorMessage: "Could not post to posts" });
+    });
+});
+
 router.get('/', (req, res) => {
   // do your magic!
   Posts.get(req.query)
