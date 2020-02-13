@@ -121,6 +121,14 @@ function validateUser(req, res, next) {
 
 function validatePost(req, res, next) {
   // do your magic!
-}
+  const user = { ...req.body};
+  if (user && user.name) {
+    next();
+  } else if (!user.name) {
+    res.status(400).json({error: "Please provide a name"});
+  } else {
+    res.status(400).json({ error: "Please provide the user data"})
+  };
+};
 
 module.exports = router;
