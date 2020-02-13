@@ -17,7 +17,9 @@ function logger(req,res,next) {
 };
 
 server.use(cors());
-server.use(helmet())
+server.use(helmet());
+server.use(express.json());
+server.use(logger);
 
 server.use("/api/posts", logger, postRouter);
 server.use("/api/users", logger, userRouter);
