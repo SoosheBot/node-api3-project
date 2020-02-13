@@ -1,18 +1,22 @@
 const express = require("express");
 
 const Users = require("./userDb");
+const Posts = require("../posts/postDb");
 
 const router = express.Router();
 
 router.post("/", (req, res) => {
   // do your magic!
-  const users = {...req.body};
+  const users = { ...req.body };
+
   Users.insert(users)
     .then(user => {
       res.status(201).json(user);
     })
     .catch(err => {
-      res.status(500).json({ errorMessage: "Could not post to users" });
+      res
+        .status(500)
+        .json({ errorMessage: "Could not post new user to users" });
     });
 });
 
@@ -23,22 +27,26 @@ router.post("/:id/posts", (req, res) => {
 router.get("/", (req, res) => {
   // do your magic!
   Users.get(req.query)
-  .then(users => {
-    res.status(201).json(users);
-  })
-  .catch(err => {
-    res.status(500).json({errorMessage: "Could not get users."})
-  })
+    .then(users => {
+      res.status(201).json(users);
+    })
+    .catch(err => {
+      res.status(500).json({ errorMessage: "Could not get users." });
+    });
 });
 
 router.get("/:id", (req, res) => {
   // do your magic!
   const { id } = req.params;
-  Users.getById(id).then(users => {
-    res.status(200).json(users)
-  }).catch(err => {
-    res.status(500).json({errorMessage: "Could not find user with that ID"});
-  });
+  Users.getById(id)
+    .then(users => {
+      res.status(200).json(users);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ errorMessage: "Could not find user with that ID" });
+    });
 });
 
 router.get("/:id/posts", (req, res) => {
