@@ -28,7 +28,7 @@ router.post("/:id/posts", validateUserId, validatePost, (req, res) => {
       res.status(201).json(post);
     })
     .catch(err => {
-      res.status(500).json({ error: "Error saving post to database." });
+      res.status(500).json({ error: "Error adding post to user with that ID." });
     });
 });
 
@@ -75,7 +75,7 @@ router.delete("/:id", validateUserId, (req, res) => {
   const { id } = req.user;
   Users.remove(id)
     .then(users => {
-      res.status(200).json({ message: `${users} at ${id} was deleted.` });
+      res.status(200).json({ message: `User ${users} at user id# ${id} was deleted.` });
     })
     .catch(err => {
       res.status(500).json({ error: "Could not delete user with this ID" });
@@ -99,8 +99,7 @@ router.put("/:id", validateUser, validateUserId, (req, res) => {
 
 function validateUserId(req, res, next) {
   // do your magic!
-  Users.getById(req.params.id)
-  .then(user => {
+  Users.getById(req.params.id).then(user => {
     if (user) {
       req.user = user;
       next();
@@ -108,7 +107,7 @@ function validateUserId(req, res, next) {
       res.status(400).json({ errorMessage: "invalid user ID" });
     }
   });
-}
+};
 
 function validateUser(req, res, next) {
   // do your magic!
@@ -118,8 +117,8 @@ function validateUser(req, res, next) {
     res.status(400).json({ message: "Missing required name field" });
   } else {
     res.status(400).json({ message: "Missing user data" });
-  }
-}
+  };
+};
 
 function validatePost(req, res, next) {
   // do your magic!
@@ -129,7 +128,7 @@ function validatePost(req, res, next) {
     res.status(400).json({ message: "Missing required text field" });
   } else {
     res.status(400).json({ message: "Missing post data" });
-  }
-}
+  };
+};
 
 module.exports = router;
