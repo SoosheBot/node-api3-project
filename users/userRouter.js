@@ -129,6 +129,6 @@ function validatePost(req, res, next) {
   } else {
     res.status(400).json({ error: "Please provide the user data"})
   };
-};
+}; 
 
 module.exports = router;
