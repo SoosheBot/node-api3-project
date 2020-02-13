@@ -4,19 +4,17 @@ const Posts = require("./postDb");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", validatePostId(), (req, res) => {
   const posts = { ...req.body };
-  if (!posts.text || !posts.user_id) {
-    res.status(404).json({ message: "Please provide text and user_id" });
-  } else {
-    Posts.insert(posts)
-      .then(post => {
-        res.status(201).json(post);
-      })
-      .catch(err => {
-        res.status(500).json({ errorMessage: "Could not post to posts" });
-      });
-  }
+  Users.insert(posts)
+    .then(post => {
+      res.status(201).json(post);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ errorMessage: "Could not post new post to posts" });
+    });
 });
 
 router.get("/", (req, res) => {
