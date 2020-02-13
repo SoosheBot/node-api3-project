@@ -75,32 +75,44 @@ router.delete("/:id", validateUserId(), (req, res) => {
   // do your magic!
   const { id } = req.user;
   Users.remove(id)
-  .then(users => {
-    res.status(200).json({ message: `${users} at ${id} was deleted.` })
-  })
-  .catch(err => {
-    res.status(500).json({error: "Could not delete user with this ID"})
-  })
+    .then(users => {
+      res.status(200).json({ message: `${users} at ${id} was deleted.` });
+    })
+    .catch(err => {
+      res.status(500).json({ error: "Could not delete user with this ID" });
+    });
 });
 
-router.put("/:id", validateUser(), validateUserId(),  (req, res) => {
+router.put("/:id", validateUser(), validateUserId(), (req, res) => {
   // do your magic!
-  const users = {...req.body};
-  const {id} = req.params;
+  const users = { ...req.body };
+  const { id } = req.params;
   Users.update(id, users)
-  .then(user => {
-    res.status(201).json(user);
-  })
-  .catch(err => {
-    res.status(500).json({error: "Could not update user at this ID"})
-  });
-
+    .then(user => {
+      res.status(201).json(user);
+    })
+    .catch(err => {
+      res.status(500).json({ error: "Could not update user at this ID" });
+    });
 });
 
 //custom middleware
 
 function validateUserId(req, res, next) {
   // do your magic!
+  const { id } = req.params;
+  Users.getById(id)
+    .then(user => {
+      if (user) {
+        req.user = user;
+        next();
+      } else {
+        res.status(400), json({ error: "invalid user id" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: "Could not validate user id" });
+    });
 }
 
 function validateUser(req, res, next) {
