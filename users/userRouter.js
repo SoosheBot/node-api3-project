@@ -29,7 +29,7 @@ router.post("/:id/posts", validateUserId(), validatePost(), (req, res) => {
       res.status(201).json(post);
     })
     .catch(err => {
-      res.status(500).json({error: "Error saving post to database."});
+      res.status(500).json({ error: "Error saving post to database." });
     });
 });
 
@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", validateUserId(), (req, res) => {
   // do your magic!
   const { id } = req.params;
   Users.getById(id)
@@ -58,8 +58,17 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get("/:id/posts", (req, res) => {
+router.get("/:id/posts", validateUserId(), (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  Users.getUserPosts(id)
+    .then(posts => {
+      res.status(200).json(posts);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: "Could not get post with this ID" });
+    });
 });
 
 router.delete("/:id", (req, res) => {
