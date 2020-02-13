@@ -8,7 +8,6 @@ const router = express.Router();
 router.post("/", validateUserId(), (req, res) => {
   // do your magic!
   const users = { ...req.body };
-
   Users.insert(users)
     .then(user => {
       res.status(201).json(user);
