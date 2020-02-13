@@ -1,5 +1,4 @@
 const express = require('express');
-const cors = require('cors');
 const helmet = require('helmet');
 
 const postRouter = require("./posts/postRouter");
@@ -16,7 +15,6 @@ function logger(req,res,next) {
   next();
 };
 
-server.use(cors());
 server.use(helmet());
 server.use(express.json());
 server.use(logger);
@@ -28,8 +26,5 @@ server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
-//custom middleware
-
-function logger(req, res, next) {}
 
 module.exports = server;
