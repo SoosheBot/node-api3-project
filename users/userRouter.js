@@ -71,8 +71,16 @@ router.get("/:id/posts", validateUserId(), (req, res) => {
     });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", validateUserId(), (req, res) => {
   // do your magic!
+  const { id } = req.user;
+  Users.remove(id)
+  .then(users => {
+    res.status(200).json({ message: `${users} at ${id} was deleted.` })
+  })
+  .catch(err => {
+    res.status(500).json({error: "Could not delete user with this ID"})
+  })
 });
 
 router.put("/:id", (req, res) => {
