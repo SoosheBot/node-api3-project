@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id",  (req, res) => {
+router.get("/:id", validateUserId, (req, res) => {
   // do your magic!
   const { id } = req.params;
   Users.getById(id)
@@ -97,17 +97,18 @@ router.put("/:id",  (req, res) => {
 
 //custom middleware
 
-// function validateUserId(req, res, next) {
-//   // do your magic!
-//   Users.getById(req.params.id).then(user => {
-//     if (user) {
-//       req.user = user;
-//       next();
-//     } else {
-//       res.status(400).json({ errorMessage: "invalid user ID" });
-//     }
-//   });
-// }
+function validateUserId(req, res, next) {
+  // do your magic!
+  Users.getById(req.params.id)
+  .then(user => {
+    if (user) {
+      req.user = user;
+      next();
+    } else {
+      res.status(400).json({ errorMessage: "invalid user ID" });
+    }
+  });
+}
 
 // function validateUser(req, res, next) {
 //   // do your magic!
