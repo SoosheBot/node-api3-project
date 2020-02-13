@@ -5,7 +5,7 @@ const Posts = require("../posts/postDb");
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.post("/", validateUserId(), (req, res) => {
   // do your magic!
   const users = { ...req.body };
 
@@ -20,8 +20,17 @@ router.post("/", (req, res) => {
     });
 });
 
-router.post("/:id/posts", (req, res) => {
+router.post("/:id/posts", validateUserId(), validatePost(), (req, res) => {
   // do your magic!
+  const { id } = req.params;
+  const { text } = req.body;
+  Posts.insert({ user_id: id, text: text })
+    .then(post => {
+      res.status(201).json(post);
+    })
+    .catch(err => {
+      res.status(500).json({error: "Error saving post to database."});
+    });
 });
 
 router.get("/", (req, res) => {
